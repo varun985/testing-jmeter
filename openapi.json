@@ -1,0 +1,6831 @@
+{
+  "openapi": "2.0",
+  "info": {
+    "title": "Trustwise Portal APIs",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v2/projects/create/": {
+      "post": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Create Project",
+        "description": "Creates a new project based on the provided project creation details including project name, description and visability.\n\nArgs:\n    project (ProjectCreate): An object containing all the necessary details required to create a new project.\n    project_service (ProjectService, optional): The Project service to interact with. Defaults to Depends(get_project_service).\n\nRaises:\n    HTTPException: Raised if the project could not be created.\n\nReturns:\n    ProjectCreateResponse: The model containing the ID and other details of the newly created project, confirming the successful creation.",
+        "operationId": "create_project_v2_projects_create__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectCreateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/projects/": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Read Projects",
+        "description": "Retrieves a paginated list of active projects for a user. Projects are sorted by creation time in descending order. \n\nArgs:\n    page (int, optional): The page number of the project list to be retrieved. Defaults to 1.\n    per_page (int, optional): The number of projects to display per page. Defaults to 10.\n    project_service (ProjectService, optional): The Project service to interact with. Defaults to Depends(get_project_service).\n\nReturns:\n    ProjectResponseModel: A model containing a list of projects, along with pagination information.",
+        "operationId": "read_projects_v2_projects__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Per Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponseModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project_id}": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Read Project",
+        "description": "Retrieves detailed information about a specific project identified by its project ID for the authenticated user.\n\nArgs:\n    project_id (str): The unique identifier of the project to be retrieved.\n    project_service (ProjectService, optional): The Project service to interact with. Defaults to Depends(get_project_service).\n\nRaises:\n    HTTPException: Raised if no project with the provided ID could be found under the authenticated user's ID.\n\nReturns:\n    ProjectEntityModel: The model containing detailed information about the project, if found.",
+        "operationId": "read_project_v2_projects__project_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectEntityModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Update Project",
+        "description": "Updates an existing project's details (name, description, visability, is_pinned) based on the provided project update information. \n\nArgs:\n    project (ProjectUpdate): An object containing the updated details for the project.\n    project_service (ProjectService, optional): The Project service to interact with. Defaults to Depends(get_project_service). \n\nRaises:\n    HTTPException: Raised if the project with the specified ID is not found or if there is an error during the update process.\n\nReturns:\n    ProjectEntityModel: The updated project details as a model if the update is successful.",
+        "operationId": "update_project_v2_projects__project_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectEntityModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/delete/{project_id}": {
+      "delete": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Delete Project",
+        "description": "Marks a specified project as deleted by updating its status to \"deleted\" and adding a \"deleted_date\" field.\nThis endpoint does not remove the project from the database but changes its status, effectively soft-deleting the project.\n\nArgs:\n    project_id (str): The unique identifier of the project to be marked as deleted.\n    project_service (ProjectService, optional):  The Project service to interact with. Defaults to Depends(get_project_service). \n\nRaises:\n    HTTPException: Raised if no project with the provided ID could be found or if the project has already been marked as deleted.\n\nReturns:\n    bool: True if the project was successfully marked as deleted, False if the project was not updated (already marked as deleted or not found).",
+        "operationId": "delete_project_v2_projects_delete__project_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "title": "Response Delete Project V2 Projects Delete  Project Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/metrics/": {
+      "post": {
+        "tags": [
+          "scan"
+        ],
+        "summary": "Get Scan Metrics",
+        "operationId": "get_scan_metrics_v2_metrics__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetricsRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/system/metrics/average_scan_time/": {
+      "post": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Get Average Scan Time Charts",
+        "operationId": "get_average_scan_time_charts_v2_system_metrics_average_scan_time__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemMetricsRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/system/metrics/response_latency/": {
+      "post": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Get Response Latency Charts",
+        "operationId": "get_response_latency_charts_v2_system_metrics_response_latency__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemMetricsRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/project/{project_id}/scans": {
+      "get": {
+        "tags": [
+          "scans"
+        ],
+        "summary": "Get Scans By Project Id",
+        "operationId": "get_scans_by_project_id_v2_project__project_id__scans_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Per Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScansResponseModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/project/scan/{scan_id}": {
+      "get": {
+        "tags": [
+          "scans"
+        ],
+        "summary": "Get Scan With Id",
+        "operationId": "get_scan_with_id_v2_project_scan__scan_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Per Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanObject"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/project/scan/query/{query_id}": {
+      "get": {
+        "tags": [
+          "scans"
+        ],
+        "summary": "Get Query With Queryid",
+        "operationId": "get_query_with_queryid_v2_project_scan_query__query_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Query Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/safety/hallucination_types": {
+      "get": {
+        "tags": [
+          "scan"
+        ],
+        "summary": "Get Hallucination Types",
+        "operationId": "get_hallucination_types_v2_safety_hallucination_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/scan": {
+      "post": {
+        "tags": [
+          "scan"
+        ],
+        "summary": "Run Scan",
+        "operationId": "run_scan_v2_scan_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/providers/{provider}/models": {
+      "post": {
+        "tags": [
+          "llm registration"
+        ],
+        "summary": "List Models",
+        "description": "Fetches a list of models from the specified provider using the provided API key. \nThis function calls the `list_models` method from an instance of `LLMService` to obtain model data.\n\nArgs:\n    provider (str): The name of the machine learning model provider (e.g., 'OpenAI', 'togetherai').\n    api_key (str): The API key required for authentication with the provider's service.\n    llm_service (LLMService): An instance of the LLMService class, responsible for handling logic associated with model providers.\n\nRaises:\n    HTTPException: Raised if no models are found or if there is a problem fetching the models, returning a 404 status code.\n    HTTPException: Raised if authentication with the model provider fails, returning a 401 status code.\n    HTTPException: Raised if there are specific errors related to the provider or other runtime exceptions, returning a 500 status code.\n    HTTPException: Raised for any general exception not specifically handled, indicating an internal server error, also with a 500 status code.\n\nReturns:\n    list: A list containing objects with LLM model-id and if repo is gated in object format {\"id\":\"string\", \"is_enabled\":bool} obtained from the LLM provider.",
+        "operationId": "list_models_v2_providers__provider__models_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Api Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/models/": {
+      "post": {
+        "tags": [
+          "llm registration"
+        ],
+        "summary": "Store Models",
+        "description": "Stores user-provided models for LLM service.\n\nArgs:\n    user_model (UserModel): An object containing user ID, provider, API key, and a list of models.\n    llm_service (LLMService, optional): The LLM service to interact with. Defaults to Depends(get_llm_service).\n\nRaises:\n    HTTPException: 400 Bad Request if storing models fails (e.g., invalid data or authentication issues).\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    List[str]: A list containing the names or identifiers of successfully stored models.",
+        "operationId": "store_models_v2_models__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "llm registration"
+        ],
+        "summary": "List User Models",
+        "description": "Retrieves a list of models associated with a specific user and provider.\n\nArgs:\n    provider (str): The name of the Large Language Model (LLM) provider.\n    llm_id (str): The unique ID of the LLM to fetch specific information (optional).\n    llm_service (LLMService, optional): The LLM service to interact with. \n        Defaults to Depends(get_llm_service).\n\nRaises:\n    HTTPException: 404 Not Found if no models are found for the given user and provider.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    List[str]: A list containing the names or identifiers of the user's models for the specified provider.",
+        "operationId": "list_user_models_v2_models__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api Key"
+            }
+          },
+          {
+            "name": "llm_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Llm Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/providers/": {
+      "get": {
+        "tags": [
+          "llm registration"
+        ],
+        "summary": "List Providers",
+        "description": "Retrieves a list of supported Large Language Model (LLM) providers.\n\nArgs:\n    llm_service (LLMService, optional): The LLM service to interact with. Defaults to Depends(get_llm_service).\n\nRaises:\n    HTTPException: 404 Not Found if no LLM providers are found.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    List[str]: A list containing the names of the supported LLM providers.",
+        "operationId": "list_providers_v2_providers__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/update_api_key/": {
+      "patch": {
+        "tags": [
+          "llm registration"
+        ],
+        "summary": "Update Api Key",
+        "description": "Updates the API key for a specific model for a given user and provider.\n\nArgs:\n    llm_id (str): The unique identifier of the model.\n    new_api_key (str): The new API key to replace the current one.\n    llm_service (LLMService, optional): The LLM service to interact with.\n\nRaises:\n    HTTPException: 404 Not Found if the user, provider, or model is not found.\n    HTTPException: 403 Forbidden if the new API key is not authorized.\n    HTTPException: 409 Conflict if the new API key causes a duplicate record.\n    HTTPException: 500 Internal Server Error for other unexpected errors.\n\nReturns:\n    str: A success message confirming the update of the API key.",
+        "operationId": "update_api_key_v2_update_api_key__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "llm_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Llm Id"
+            }
+          },
+          {
+            "name": "new_api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "New Api Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/model/": {
+      "delete": {
+        "tags": [
+          "llm registration"
+        ],
+        "summary": "Delete Model",
+        "description": "Deletes a specific model for a given user, provider, and API key.\n\nArgs:\n    llm_service (LLMService, optional): The LLM service to interact with.\n    llm_id (str): The unique identifier of the model to delete.\nRaises:\n    HTTPException: 404 Not Found if the user or model is not found.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    str: A success message confirming the deletion.",
+        "operationId": "delete_model_v2_model__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "llm_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Llm Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/command-center/projects/": {
+      "get": {
+        "tags": [
+          "Command Center Projects"
+        ],
+        "summary": "Read Projects",
+        "operationId": "read_projects_v2_command_center_projects__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Per Page"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "safety",
+                "alignment",
+                "performance"
+              ],
+              "title": "Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandCenterResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/command-center/projects/metrics/latency": {
+      "get": {
+        "tags": [
+          "Command Center Projects"
+        ],
+        "summary": "Projects Nfrs",
+        "operationId": "projects_nfrs_v2_command_center_projects_metrics_latency_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "safety",
+                "alignment",
+                "performance"
+              ],
+              "title": "Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommandCenterNFRResponse"
+                  },
+                  "title": "Response Projects Nfrs V2 Command Center Projects Metrics Latency Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/command-center/projects/metrics/llm": {
+      "get": {
+        "tags": [
+          "Command Center Projects"
+        ],
+        "summary": "Get Top Llm Data",
+        "operationId": "get_top_llm_data_v2_command_center_projects_metrics_llm_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectHallucinationData"
+                  },
+                  "type": "array",
+                  "title": "Response Get Top Llm Data V2 Command Center Projects Metrics Llm Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/documents": {
+      "post": {
+        "tags": [
+          "vector store"
+        ],
+        "summary": "Embed Documents",
+        "description": "Embeds documents for a specific user.\n\nArgs:\n    document_name (str): The name of the document or a descriptive label.\n    document (List[UploadFile]): List of documents to embed.\n    vector_store_service (VectoreStoreService, optional): The Vector Store service to interact with. \n        Defaults to Depends(get_vector_store_service).\n\nRaises:\n    HTTPException: 400 Bad Request if document embedding fails.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs during embedding.\n\nReturns:\n    HTTPResponse: A response object containing a JSON body with either a success message or an error message.\n        The response includes appropriate HTTP status codes based on the result of the operation.",
+        "operationId": "embed_documents_v2_documents_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_embed_documents_v2_documents_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/documents/": {
+      "get": {
+        "tags": [
+          "vector store"
+        ],
+        "summary": "Get User Documents",
+        "description": "Retrieves a list of documents associated with a specific user.\n\nArgs:\n    vector_store_service (VectoreStoreService, optional): The Vectore Store service to interact with. \n        Defaults to Depends(get_vector_store_service).\n\nRaises:\n    HTTPException: 404 Not Found if no documents are found for the given user.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    List[str]: A list containing the names and identifiers of the user's documents.",
+        "operationId": "get_user_documents_v2_documents__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/documents/{document_id}": {
+      "get": {
+        "tags": [
+          "vector store"
+        ],
+        "summary": "Get Document Info",
+        "description": "Retrieves a information about a document with given document id. \n\nArgs:\n    document_id (str): The unique identifier of the document.\n    vector_store_service (VectoreStoreService, optional): The Vectore Store service to interact with. \n        Defaults to Depends(get_vector_store_service).\n\nRaises:\n    HTTPException: 404 Not Found if no documents are found.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    Dictionary of information about given document.",
+        "operationId": "get_document_info_v2_documents__document_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "vector store"
+        ],
+        "summary": "Edit Document Name",
+        "description": "Edits the name of a specific document for a user.\n\nArgs:\n    vector_store_service (VectoreStoreService, optional): The Vectore Store service to interact with. \n        Defaults to Depends(get_vector_store_service).\n    document_id (str): The ID of the document that needs to be edited.\n    new_name (str): The new name of the document.\n\nRaises:\n    HTTPException: 404 Not Found if no user or document is found.\n    HTTPException: 400 Bad Request if the new name is not provided.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    A success message indicating the document name has been updated.",
+        "operationId": "edit_document_name_v2_documents__document_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "new_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "New Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "vector store"
+        ],
+        "summary": "Delete Document",
+        "description": "Deletes a specific document for a given user and document id.\n\nArgs:\n    vector_store_service (VectoreStoreService, optional): The Vectore Store service to interact with. \n        Defaults to Depends(get_vector_store_service).\n    document_id (str): The ID of the document that needs to be deleted.\n\nRaises:\n    HTTPException: 404 Not Found if the user or document is not found.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    str: A success message confirming the deletion.",
+        "operationId": "delete_document_v2_documents__document_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/qdrant/temp": {
+      "delete": {
+        "tags": [
+          "vector store"
+        ],
+        "summary": "Delete Temp",
+        "description": "Deletes the temp collection.\n\nArgs:\n    vector_store_service (VectoreStoreService, optional): The Vectore Store service to interact with. \n        Defaults to Depends(get_vector_store_service).\n\nRaises:\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    str: A success message confirming the deletion.",
+        "operationId": "delete_temp_v2_qdrant_temp_delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/embedding_models": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Embedding Models",
+        "operationId": "get_embedding_models_v2_optimize_embedding_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/llms": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Llms",
+        "operationId": "get_llms_v2_optimize_llms_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/cloud_providers": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Cloud Providers",
+        "operationId": "get_cloud_providers_v2_optimize_cloud_providers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/crosswalks": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "List Crosswalks",
+        "operationId": "list_crosswalks_v2_optimize_crosswalks_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Search"
+            }
+          },
+          {
+            "name": "details",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "If true, exclude 'statements' from the result",
+              "default": false,
+              "title": "Details"
+            },
+            "description": "If true, exclude 'statements' from the result"
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filters as JSON string",
+              "title": "Filters"
+            },
+            "description": "Filters as JSON string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/alignment_policies": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Alignment Policies",
+        "operationId": "get_alignment_policies_v2_optimize_alignment_policies_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/carbon_policies": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Carbon Policies",
+        "operationId": "get_carbon_policies_v2_optimize_carbon_policies_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/cost_policies": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Cost Policies",
+        "operationId": "get_cost_policies_v2_optimize_cost_policies_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/{provider}/regions": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Regions For Provider",
+        "description": "FastAPI endpoint to get the intersection of available regions for a given provider.\n\nArgs:\n    provider (str): The name of the provider passed in the request URL.\n\nReturns:\n    List[str]: A list of regions common to both datasets for the given provider.\n\nRaises:\n    HTTPException: If any error occurs during the process, with appropriate status codes.",
+        "operationId": "get_regions_for_provider_v2_optimize__provider__regions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Provider"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "Response Get Regions For Provider V2 Optimize  Provider  Regions Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/processors": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Processor List",
+        "operationId": "get_processor_list_v2_optimize_processors_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/results": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Optimize Results",
+        "operationId": "get_optimize_results_v2_optimize_results_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/scans": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Optimize Scans",
+        "operationId": "get_optimize_scans_v2_optimize_scans_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scan Id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/cost_performance_graph": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Scatter Graph Data",
+        "operationId": "get_scatter_graph_data_v2_optimize_cost_performance_graph_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/{cloud_provider}/instance_types": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Instance Types By Provider",
+        "operationId": "get_instance_types_by_provider_v2_optimize__cloud_provider__instance_types_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cloud_provider",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cloud Provider"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/model_card_summary": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Generate Model Card Summary",
+        "operationId": "generate_model_card_summary_v2_optimize_model_card_summary_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/model_details/": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Model Details",
+        "operationId": "get_model_details_v2_optimize_model_details__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Model Ids"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get Model Details V2 Optimize Model Details  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/model_card_headers/": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Model Card Headers",
+        "operationId": "get_model_card_headers_v2_optimize_model_card_headers__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/stacked_bar_chart/": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Stacked Bar Chart Data",
+        "operationId": "get_stacked_bar_chart_data_v2_optimize_stacked_bar_chart__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/radar_chart/": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Radar Chart Data",
+        "operationId": "get_radar_chart_data_v2_optimize_radar_chart__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          },
+          {
+            "name": "toggle",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Toggle"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/bar_chart_with_lines/": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Bar Chart With Lines",
+        "operationId": "get_bar_chart_with_lines_v2_optimize_bar_chart_with_lines__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/run_scan": {
+      "post": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Run Scan",
+        "description": "FastAPI endpoint to trigger a performance scan for a user.\n\nArgs:\n    request (EvaluateRequest): The request object containing all the necessary parameters for the evaluation.\n\nReturns:\n    dict: The JSON response from the performance scan service.\n\nRaises:\n    HTTPException: If validation or processing errors occur.",
+        "operationId": "run_scan_v2_optimize_run_scan_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/optimize/projects/{project_id}/scans": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "List Project Scans",
+        "description": "Retrieves a list of scans associated with a given project ID.\n\nArgs:\n    project_id (str): The unique identifier of the project for which scans are to be listed.\n\nReturns:\n    dict: A JSON response containing the list of scans associated with the project.",
+        "operationId": "list_project_scans_v2_optimize_projects__project_id__scans_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/projects/{project_id}/scans/{scan_id}/status": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Scan Status",
+        "description": "Retrieves the status of a specific scan associated with a given project.\n\nArgs:\n    project_id (str): The unique identifier of the project to which the scan belongs.\n    scan_id (str): The unique identifier of the scan whose status is to be retrieved.\n\nReturns:\n    dict: A JSON response containing the status of the specified scan.",
+        "operationId": "get_scan_status_v2_optimize_projects__project_id__scans__scan_id__status_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/projects/{project_id}/scans/{scan_id}/results": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Scan Results",
+        "description": "Retrieves the results of a specific scan associated with a given project.\n\nArgs:\n    project_id (str): The unique identifier of the project to which the scan belongs.\n    scan_id (str): The unique identifier of the scan whose results are to be retrieved.\n\nReturns:\n    dict: A JSON response containing the results of the specified scan.",
+        "operationId": "get_scan_results_v2_optimize_projects__project_id__scans__scan_id__results_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/projects/{project_id}/scans/{scan_id}/iterations/{iteration_id}": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Iteration Details",
+        "description": "Retrieves the details of a specific iteration for a given scan within a project.\n\nArgs:\n    project_id (str): The unique identifier of the project to which the scan belongs.\n    scan_id (str): The unique identifier of the scan to which the iteration belongs.\n    iteration_id (str): The unique identifier of the iteration whose details are to be retrieved.\n\nReturns:\n    dict: A JSON response containing the details of the specified iteration.",
+        "operationId": "get_iteration_details_v2_optimize_projects__project_id__scans__scan_id__iterations__iteration_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          },
+          {
+            "name": "iteration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Iteration Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/optimize/projects/{project_id}/scans/{scan_id}/logs": {
+      "get": {
+        "tags": [
+          "optimize"
+        ],
+        "summary": "Get Scan Logs",
+        "description": "Retrieves the logs of a specific scan associated with a given project.\n\nArgs:\n    project_id (str): The unique identifier of the project to which the scan belongs.\n    scan_id (str): The unique identifier of the scan whose logs are to be retrieved.\n    timestamp (Optional[str], optional): The ISO 8601 formatted timestamp to filter logs. Defaults to None.\n\nReturns:\n    dict: A JSON response containing the logs of the specified scan. \n          If the timestamp is provided, the logs will be filtered accordingly.",
+        "operationId": "get_scan_logs_v2_optimize_projects__project_id__scans__scan_id__logs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Timestamp"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/user/{user_id}/roles": {
+      "get": {
+        "tags": [
+          "Auth0 related management API endpoints"
+        ],
+        "summary": "Get User Roles",
+        "operationId": "get_user_roles_v2_user__user_id__roles_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/quickstart/projects/{project_id}/blueprints/create": {
+      "post": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "Create Blueprint",
+        "description": "Create a new blueprint within a specified project.\n\nArgs:\n    project_id (str): The ID of the project in which to create the blueprint.\n    blueprint_data (BlueprintCreate): The blueprint data to be created.\n    user_id (str, optional): The ID of the user creating the blueprint.\n\nRaises:\n    HTTPException: If there is an error during blueprint creation.\n\nReturns:\n    BlueprintResponse: The created blueprint's full data.",
+        "operationId": "create_blueprint_v2_quickstart_projects__project_id__blueprints_create_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlueprintCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlueprintResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/quickstart/projects/{project_id}/blueprints/{blueprint_id}": {
+      "get": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "Get Blueprint",
+        "description": "Retrieve a blueprint by its ID within a specified project.\n\nArgs:\n    project_id (str): The ID of the project to which the blueprint belongs.\n    blueprint_id (str): The ID of the blueprint to retrieve.\n    user_id (str, optional): The ID of the user requesting the blueprint.\n\nRaises:\n    HTTPException: If the blueprint is not found.\n    HTTPException: If there is an error during the blueprint retrieval.\n\nReturns:\n    BlueprintResponse: The requested blueprint's data.",
+        "operationId": "get_blueprint_v2_quickstart_projects__project_id__blueprints__blueprint_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "blueprint_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Blueprint Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlueprintResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "Update Blueprint",
+        "description": "Partially update a blueprint with the provided data (PATCH).\n\nArgs:\n    project_id (str): The ID of the project to which the blueprint belongs.\n    blueprint_id (str): The ID of the blueprint to update.\n    updates (dict): The fields to be updated.\n\nRaises:\n    HTTPException: If the blueprint is not found or the update fails.\n\nReturns:\n    BlueprintResponse: The updated blueprint's data.",
+        "operationId": "update_blueprint_v2_quickstart_projects__project_id__blueprints__blueprint_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "blueprint_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Blueprint Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "Updates"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlueprintResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "Replace Blueprint",
+        "description": "Replace the entire blueprint with new data (PUT).\n\nArgs:\n    project_id (str): The ID of the project to which the blueprint belongs.\n    blueprint_id (str): The ID of the blueprint to replace.\n    blueprint_data (BlueprintCreate): The full blueprint data for replacement.\n\nRaises:\n    HTTPException: If the blueprint is not found or the update fails.\n\nReturns:\n    BlueprintResponse: The updated blueprint's full data.",
+        "operationId": "replace_blueprint_v2_quickstart_projects__project_id__blueprints__blueprint_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "blueprint_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Blueprint Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlueprintCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlueprintResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "Delete Blueprint",
+        "description": "Delete a blueprint by its ID within a specified project.\n\nArgs:\n    project_id (str): The ID of the project to which the blueprint belongs.\n    blueprint_id (str): The ID of the blueprint to delete.\n\nRaises:\n    HTTPException: If the blueprint is not found or deletion fails.\n\nReturns:\n    dict: A confirmation message indicating successful deletion.",
+        "operationId": "delete_blueprint_v2_quickstart_projects__project_id__blueprints__blueprint_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "blueprint_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Blueprint Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Delete Blueprint V2 Quickstart Projects  Project Id  Blueprints  Blueprint Id  Delete"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/quickstart/projects/{project_id}/blueprints/": {
+      "get": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "List Blueprints",
+        "description": "List all blueprints for a given project, with pagination support.\n\nArgs:\n    project_id (str): The ID of the project for which to list blueprints.\n    user_id (str, optional): The ID of the user requesting the blueprints. \n    limit (int, optional): The maximum number of blueprints to return. Defaults to 10.\n    offset (int, optional): The number of blueprints to skip before starting the list. Defaults to 0.\n\nRaises:\n    HTTPException: If there is an error during listing the blueprints.\n\nReturns:\n    BlueprintsListResponse: A dictionary containing the total number of blueprints and a list of blueprints with full data.",
+        "operationId": "list_blueprints_v2_quickstart_projects__project_id__blueprints__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlueprintsListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/quickstart/projects/{project_id}/blueprints/{blueprint_id}/run_scan": {
+      "post": {
+        "tags": [
+          "blueprints"
+        ],
+        "summary": "Run Scan Endpoint",
+        "description": "Run a scan for a specific blueprint in the given project.\n\nArgs:\n    blueprint_id (str): The ID of the blueprint to run the scan on.\n    project_id (str): The ID of the project to which the blueprint belongs.\n    request (EvaluateRequest): The evaluation request data.\n    \nRaises:\n    HTTPException: If the scan request fails.\n\nReturns:\n    dict: The result from the scan service.",
+        "operationId": "run_scan_endpoint_v2_quickstart_projects__project_id__blueprints__blueprint_id__run_scan_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "blueprint_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Blueprint Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Run Scan Endpoint V2 Quickstart Projects  Project Id  Blueprints  Blueprint Id  Run Scan Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/projects/{project_id}/scans/{scan_id}/reports/{report_type}": {
+      "post": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Generate And Save Report",
+        "operationId": "generate_and_save_report_v2_projects__project_id__scans__scan_id__reports__report_type__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scan Id"
+            }
+          },
+          {
+            "name": "report_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ReportType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ModelCardReport"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RiskAndComplianceReport"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExecutiveSummaryReport"
+                    }
+                  ],
+                  "title": "Response Generate And Save Report V2 Projects  Project Id  Scans  Scan Id  Reports  Report Type  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/reports/{report_id}": {
+      "get": {
+        "tags": [
+          "Reports"
+        ],
+        "summary": "Retrieve Report",
+        "operationId": "retrieve_report_v2_reports__report_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Report Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/documents/{document_id}/generate_questions": {
+      "get": {
+        "tags": [
+          "Synthetic Question Generation"
+        ],
+        "summary": "Generate Questions",
+        "description": "Endpoint to accept requests to generate synthetic questions, takes document_id, model_id, embedding_model as inputs to generate questions.\nReturns a dict of synthetic questions in the following format -\u003E SyntheticQuestionsOutput",
+        "operationId": "generate_questions_v2_documents__document_id__generate_questions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "model_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Id"
+            }
+          },
+          {
+            "name": "embedding_model_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Embedding Model Id"
+            }
+          },
+          {
+            "name": "total_questions_to_return",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "title": "Total Questions To Return"
+            }
+          },
+          {
+            "name": "questions_per_node_limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 2,
+              "title": "Questions Per Node Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyntheticQuestionsOutput"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/sample_documents": {
+      "post": {
+        "tags": [
+          "Sample Documents"
+        ],
+        "summary": "Embed Sample Documents",
+        "description": "Embed sample documents from a local folder into a vector store.\n\nArgs:\n    refresh(bool): Optional parameter to refresh the sample documents in Qdrant and MongoDB.\n    vector_store_service (VectoreStoreService): Service for vector store operations\n    sample_docs_service (SampleDocumentService): Service for sample document operations\n\nReturns:\n    dict: A dictionary with success status and message\n\nRaises:\n    HTTPException: If there's an error during the process",
+        "operationId": "embed_sample_documents_v2_sample_documents_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "refresh",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Refresh"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/sample_documents/": {
+      "get": {
+        "tags": [
+          "Sample Documents"
+        ],
+        "summary": "Get Sample Documents",
+        "description": "Retrieves a list of Sample Documents.\n\nArgs:\n    sample_docs_service (SampleDocumentService, optional): The Sample Document Service to interact with.\n        Defaults to Depends(get_sample_document_service).\n\nRaises:\n    HTTPException: 404 Not Found if no documents are found for the given user.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    List[str]: A list containing the names and identifiers of the user's documents.",
+        "operationId": "get_sample_documents_v2_sample_documents__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/sample_documents/{document_id}": {
+      "get": {
+        "tags": [
+          "Sample Documents"
+        ],
+        "summary": "Get Sample Document",
+        "description": "Retrieves a information about Sample document with given document id.\n\nArgs:\n    document_id (str): The unique identifier of the document.\n    sample_docs_service (SampleDocumentService, optional): The Sample Document Service to interact with.\n        Defaults to Depends(get_sample_document_service).\n\nRaises:\n    HTTPException: 404 Not Found if no documents are found.\n    HTTPException: 500 Internal Server Error if an unexpected error occurs.\n\nReturns:\n    Dictionary of information about given document.",
+        "operationId": "get_sample_document_v2_sample_documents__document_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnswerRelevancy": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "generated_question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generated Question"
+          }
+        },
+        "type": "object",
+        "title": "AnswerRelevancy"
+      },
+      "BaseReport": {
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "title": "Report Id"
+          },
+          "scan_id": {
+            "type": "string",
+            "title": "Scan Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "report_name": {
+            "type": "string",
+            "title": "Report Name"
+          },
+          "report_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReportType"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Report Type"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "scan_created_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scan Created Timestamp"
+          },
+          "technical_appendix": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technical Appendix"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_id",
+          "project_id",
+          "project_name",
+          "report_name",
+          "report_type",
+          "scan_created_timestamp"
+        ],
+        "title": "BaseReport"
+      },
+      "BlueprintCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "usecase_name": {
+            "type": "string",
+            "title": "Usecase Name"
+          },
+          "industry": {
+            "type": "string",
+            "title": "Industry"
+          },
+          "llms": {
+            "items": {
+              "$ref": "#/components/schemas/LLM"
+            },
+            "type": "array",
+            "title": "Llms"
+          },
+          "scan_config": {
+            "$ref": "#/components/schemas/ScanConfig"
+          },
+          "embedding_model_name": {
+            "type": "string",
+            "title": "Embedding Model Name"
+          },
+          "internal_policies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Internal Policies"
+          },
+          "external_policies": {
+            "items": {
+              "$ref": "#/components/schemas/Crosswalk"
+            },
+            "type": "array",
+            "title": "External Policies"
+          },
+          "workload": {
+            "type": "string",
+            "title": "Workload"
+          },
+          "controls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Controls"
+          },
+          "dataset": {
+            "$ref": "#/components/schemas/Dataset"
+          },
+          "reports": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reports"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "usecase_name",
+          "industry",
+          "llms",
+          "scan_config",
+          "embedding_model_name",
+          "internal_policies",
+          "external_policies",
+          "workload",
+          "controls",
+          "dataset",
+          "reports",
+          "author"
+        ],
+        "title": "BlueprintCreate"
+      },
+      "BlueprintResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "usecase_name": {
+            "type": "string",
+            "title": "Usecase Name"
+          },
+          "industry": {
+            "type": "string",
+            "title": "Industry"
+          },
+          "llms": {
+            "items": {
+              "$ref": "#/components/schemas/LLM"
+            },
+            "type": "array",
+            "title": "Llms"
+          },
+          "scan_config": {
+            "$ref": "#/components/schemas/ScanConfig"
+          },
+          "embedding_model_name": {
+            "type": "string",
+            "title": "Embedding Model Name"
+          },
+          "internal_policies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Internal Policies"
+          },
+          "external_policies": {
+            "items": {
+              "$ref": "#/components/schemas/Crosswalk"
+            },
+            "type": "array",
+            "title": "External Policies"
+          },
+          "workload": {
+            "type": "string",
+            "title": "Workload"
+          },
+          "controls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Controls"
+          },
+          "dataset": {
+            "$ref": "#/components/schemas/Dataset"
+          },
+          "reports": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reports"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "blueprint_id": {
+            "type": "string",
+            "title": "Blueprint Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "scan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scan Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "usecase_name",
+          "industry",
+          "llms",
+          "scan_config",
+          "embedding_model_name",
+          "internal_policies",
+          "external_policies",
+          "workload",
+          "controls",
+          "dataset",
+          "reports",
+          "author",
+          "blueprint_id",
+          "project_id",
+          "user_id",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "BlueprintResponse"
+      },
+      "BlueprintsListResponse": {
+        "properties": {
+          "total_count": {
+            "type": "integer",
+            "title": "Total Count"
+          },
+          "blueprints": {
+            "items": {
+              "$ref": "#/components/schemas/BlueprintResponse"
+            },
+            "type": "array",
+            "title": "Blueprints"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_count",
+          "blueprints"
+        ],
+        "title": "BlueprintsListResponse"
+      },
+      "Body_embed_documents_v2_documents_post": {
+        "properties": {
+          "document": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Document"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document"
+        ],
+        "title": "Body_embed_documents_v2_documents_post"
+      },
+      "CommandCenterNFRResponse": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "project_created_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Project Created Timestamp"
+          },
+          "avg_latency": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Latency"
+          },
+          "hallucination_count": {
+            "type": "integer",
+            "title": "Hallucination Count"
+          },
+          "avg_faithfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Faithfulness"
+          },
+          "avg_context_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Context Relevancy"
+          },
+          "avg_answer_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Answer Relevancy"
+          },
+          "avg_summarization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Summarization"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "project_name",
+          "project_created_timestamp",
+          "hallucination_count"
+        ],
+        "title": "CommandCenterNFRResponse"
+      },
+      "CommandCenterRecord": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "project_owner": {
+            "type": "string",
+            "title": "Project Owner"
+          },
+          "project_updated_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Updated Timestamp"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "hallucination_detected": {
+            "type": "integer",
+            "title": "Hallucination Detected"
+          },
+          "avg_faithfulness": {
+            "type": "number",
+            "title": "Avg Faithfulness"
+          },
+          "avg_context_relevancy": {
+            "type": "number",
+            "title": "Avg Context Relevancy"
+          },
+          "avg_answer_relevancy": {
+            "type": "number",
+            "title": "Avg Answer Relevancy"
+          },
+          "avg_summarization": {
+            "type": "number",
+            "title": "Avg Summarization"
+          },
+          "trustwise_score": {
+            "type": "number",
+            "title": "Trustwise Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "project_name",
+          "project_owner",
+          "status",
+          "hallucination_detected",
+          "avg_faithfulness",
+          "avg_context_relevancy",
+          "avg_answer_relevancy",
+          "avg_summarization",
+          "trustwise_score"
+        ],
+        "title": "CommandCenterRecord"
+      },
+      "CommandCenterResponse": {
+        "properties": {
+          "total_items": {
+            "type": "integer",
+            "title": "Total Items"
+          },
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/CommandCenterRecord"
+            },
+            "type": "array",
+            "title": "Projects"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_items",
+          "projects"
+        ],
+        "title": "CommandCenterResponse"
+      },
+      "CompleteQueryTrace": {
+        "properties": {
+          "embedding": {
+            "$ref": "#/components/schemas/QueryTrace"
+          },
+          "querying": {
+            "$ref": "#/components/schemas/LatencyMetrics"
+          },
+          "templating": {
+            "$ref": "#/components/schemas/LatencyMetrics"
+          },
+          "synthesizing": {
+            "$ref": "#/components/schemas/LatencyMetrics"
+          },
+          "retrieving": {
+            "$ref": "#/components/schemas/LatencyMetrics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "embedding",
+          "querying",
+          "templating",
+          "synthesizing",
+          "retrieving"
+        ],
+        "title": "CompleteQueryTrace"
+      },
+      "ContextRelevancy": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "topics": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ContextRelevancyTopics"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topics"
+          }
+        },
+        "type": "object",
+        "title": "ContextRelevancy"
+      },
+      "ContextRelevancyTopics": {
+        "properties": {
+          "topic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Topic"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "title": "ContextRelevancyTopics"
+      },
+      "Crosswalk": {
+        "properties": {
+          "crosswalk_id": {
+            "type": "string",
+            "title": "Crosswalk Id"
+          },
+          "crosswalk_name": {
+            "type": "string",
+            "title": "Crosswalk Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crosswalk_id",
+          "crosswalk_name"
+        ],
+        "title": "Crosswalk"
+      },
+      "CrosswalkEvaluation": {
+        "additionalProperties": {
+          "$ref": "#/components/schemas/IterationCrosswalkEvaluation"
+        },
+        "type": "object",
+        "title": "CrosswalkEvaluation"
+      },
+      "CrosswalkResult": {
+        "properties": {
+          "scan_id": {
+            "type": "string",
+            "title": "Scan Id"
+          },
+          "iteration_evaluations": {
+            "items": {
+              "$ref": "#/components/schemas/CrosswalkEvaluation"
+            },
+            "type": "array",
+            "title": "Iteration Evaluations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_id",
+          "iteration_evaluations"
+        ],
+        "title": "CrosswalkResult"
+      },
+      "Dataset": {
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "title": "Dataset Id"
+          },
+          "dataset_name": {
+            "type": "string",
+            "title": "Dataset Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "dataset_id",
+          "dataset_name"
+        ],
+        "title": "Dataset"
+      },
+      "EvaluateRequest": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "embedding_models": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Embedding Models"
+          },
+          "models": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Models"
+          },
+          "baseline_model": {
+            "type": "string",
+            "title": "Baseline Model"
+          },
+          "together_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Together Key"
+          },
+          "openai_api_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openai Api Key"
+          },
+          "queries": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Queries"
+          },
+          "evaluation_configs": {
+            "type": "object",
+            "title": "Evaluation Configs"
+          },
+          "provider_name": {
+            "type": "string",
+            "title": "Provider Name"
+          },
+          "provider_region": {
+            "type": "string",
+            "title": "Provider Region"
+          },
+          "processor_name": {
+            "type": "string",
+            "title": "Processor Name"
+          },
+          "instance_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instance Type"
+          },
+          "crosswalk_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crosswalk Ids",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "document_id",
+          "embedding_models",
+          "models",
+          "baseline_model",
+          "queries",
+          "evaluation_configs",
+          "provider_name",
+          "provider_region",
+          "processor_name"
+        ],
+        "title": "EvaluateRequest"
+      },
+      "ExecutiveSummaryReport": {
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "title": "Report Id"
+          },
+          "scan_id": {
+            "type": "string",
+            "title": "Scan Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "report_name": {
+            "type": "string",
+            "title": "Report Name",
+            "default": "Executive Summary Report"
+          },
+          "report_type": {
+            "type": "string",
+            "title": "Report Type",
+            "default": "EXECUTIVE_SUMMARY"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "scan_created_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scan Created Timestamp"
+          },
+          "technical_appendix": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technical Appendix"
+          },
+          "sci_metrics": {
+            "$ref": "#/components/schemas/SCIdata"
+          },
+          "selected_models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelSelected"
+            },
+            "type": "array",
+            "title": "Selected Models"
+          },
+          "models_performance_summary": {
+            "items": {
+              "$ref": "#/components/schemas/ModelPerformanceSummary"
+            },
+            "type": "array",
+            "title": "Models Performance Summary"
+          },
+          "scan_configurations": {
+            "$ref": "#/components/schemas/ScanConfigurations"
+          },
+          "financial_scatter_plot": {
+            "items": {
+              "$ref": "#/components/schemas/FinancialScatterPlotItem"
+            },
+            "type": "array",
+            "title": "Financial Scatter Plot"
+          },
+          "model_card_summary": {
+            "type": "string",
+            "title": "Model Card Summary"
+          },
+          "bar_chart_data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Bar Chart Data"
+          },
+          "model_performance_leaderboard": {
+            "items": {
+              "$ref": "#/components/schemas/ModelPerformanceLeaderboardItem"
+            },
+            "type": "array",
+            "title": "Model Performance Leaderboard"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_id",
+          "project_id",
+          "project_name",
+          "scan_created_timestamp",
+          "sci_metrics",
+          "selected_models",
+          "models_performance_summary",
+          "scan_configurations",
+          "financial_scatter_plot",
+          "model_card_summary",
+          "bar_chart_data",
+          "model_performance_leaderboard"
+        ],
+        "title": "ExecutiveSummaryReport"
+      },
+      "Faithfulness": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "facts": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FaithfulnessFacts"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Facts"
+          }
+        },
+        "type": "object",
+        "title": "Faithfulness"
+      },
+      "FaithfulnessFacts": {
+        "properties": {
+          "statement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Statement"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "prob": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prob"
+          }
+        },
+        "type": "object",
+        "title": "FaithfulnessFacts"
+      },
+      "FinancialScatterPlotItem": {
+        "properties": {
+          "iteration_name": {
+            "type": "string",
+            "title": "Iteration Name"
+          },
+          "cost_estimate": {
+            "type": "number",
+            "title": "Cost Estimate"
+          },
+          "composite_performance": {
+            "type": "number",
+            "title": "Composite Performance"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/FinancialScatterPlotMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "iteration_name",
+          "cost_estimate",
+          "composite_performance",
+          "metadata"
+        ],
+        "title": "FinancialScatterPlotItem"
+      },
+      "FinancialScatterPlotMetadata": {
+        "properties": {
+          "model_used": {
+            "type": "string",
+            "title": "Model Used"
+          },
+          "model_provider": {
+            "type": "string",
+            "title": "Model Provider"
+          },
+          "chunk_size": {
+            "type": "integer",
+            "title": "Chunk Size"
+          },
+          "number_of_retrieved_chunks": {
+            "type": "integer",
+            "title": "Number Of Retrieved Chunks"
+          },
+          "average_faithfulness": {
+            "type": "number",
+            "title": "Average Faithfulness"
+          },
+          "average_answer_relevancy": {
+            "type": "number",
+            "title": "Average Answer Relevancy"
+          },
+          "average_context_relevancy": {
+            "type": "number",
+            "title": "Average Context Relevancy"
+          },
+          "average_summarization": {
+            "type": "number",
+            "title": "Average Summarization"
+          },
+          "average_simplicity": {
+            "type": "number",
+            "title": "Average Simplicity"
+          },
+          "average_helpfulness": {
+            "type": "number",
+            "title": "Average Helpfulness"
+          },
+          "average_clarity": {
+            "type": "number",
+            "title": "Average Clarity"
+          },
+          "average_formality": {
+            "type": "number",
+            "title": "Average Formality"
+          },
+          "average_latency": {
+            "type": "number",
+            "title": "Average Latency"
+          },
+          "total_tokens_used": {
+            "type": "integer",
+            "title": "Total Tokens Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_used",
+          "model_provider",
+          "chunk_size",
+          "number_of_retrieved_chunks",
+          "average_faithfulness",
+          "average_answer_relevancy",
+          "average_context_relevancy",
+          "average_summarization",
+          "average_simplicity",
+          "average_helpfulness",
+          "average_clarity",
+          "average_formality",
+          "average_latency",
+          "total_tokens_used"
+        ],
+        "title": "FinancialScatterPlotMetadata"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IterationCrosswalkEvaluation": {
+        "properties": {
+          "crosswalk_name": {
+            "type": "string",
+            "title": "Crosswalk Name"
+          },
+          "crosswalk_passed": {
+            "type": "boolean",
+            "title": "Crosswalk Passed"
+          },
+          "number_of_statements_passed": {
+            "type": "integer",
+            "title": "Number Of Statements Passed"
+          },
+          "number_of_statements_failed": {
+            "type": "integer",
+            "title": "Number Of Statements Failed"
+          },
+          "total_number_of_statements": {
+            "type": "integer",
+            "title": "Total Number Of Statements"
+          },
+          "statements_failed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Statements Failed"
+          },
+          "statements_passed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Statements Passed"
+          },
+          "statement_evaluations": {
+            "items": {
+              "$ref": "#/components/schemas/StatementEvaluation"
+            },
+            "type": "array",
+            "title": "Statement Evaluations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crosswalk_name",
+          "crosswalk_passed",
+          "number_of_statements_passed",
+          "number_of_statements_failed",
+          "total_number_of_statements",
+          "statements_failed",
+          "statements_passed",
+          "statement_evaluations"
+        ],
+        "title": "IterationCrosswalkEvaluation"
+      },
+      "LLM": {
+        "properties": {
+          "llm_id": {
+            "type": "string",
+            "title": "Llm Id"
+          },
+          "llm_name": {
+            "type": "string",
+            "title": "Llm Name"
+          },
+          "llm_provider_name": {
+            "type": "string",
+            "title": "Llm Provider Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "llm_id",
+          "llm_name",
+          "llm_provider_name"
+        ],
+        "title": "LLM"
+      },
+      "LatencyMetrics": {
+        "properties": {
+          "latency": {
+            "type": "number",
+            "title": "Latency"
+          }
+        },
+        "type": "object",
+        "required": [
+          "latency"
+        ],
+        "title": "LatencyMetrics"
+      },
+      "MetricsRequestModel": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "scan_id": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scan Id"
+          },
+          "start_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Timestamp"
+          },
+          "end_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Timestamp"
+          },
+          "llm_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Id"
+          },
+          "graph_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Graph Type"
+          },
+          "metric_name": {
+            "type": "string",
+            "title": "Metric Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "metric_name"
+        ],
+        "title": "MetricsRequestModel"
+      },
+      "ModelCardReport": {
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "title": "Report Id"
+          },
+          "scan_id": {
+            "type": "string",
+            "title": "Scan Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "report_name": {
+            "type": "string",
+            "title": "Report Name",
+            "default": "Model Card Report"
+          },
+          "report_type": {
+            "type": "string",
+            "title": "Report Type",
+            "default": "MODEL_CARD"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "scan_created_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scan Created Timestamp"
+          },
+          "technical_appendix": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technical Appendix"
+          },
+          "sci_metrics": {
+            "$ref": "#/components/schemas/SCIdata"
+          },
+          "selected_models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelSelected"
+            },
+            "type": "array",
+            "title": "Selected Models"
+          },
+          "model_card_summary": {
+            "type": "string",
+            "title": "Model Card Summary"
+          },
+          "radar_chart_data": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Radar Chart Data"
+          },
+          "bar_chart_data": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bar Chart Data"
+          },
+          "model_performance_leaderboard": {
+            "items": {
+              "$ref": "#/components/schemas/ModelPerformanceLeaderboardItem"
+            },
+            "type": "array",
+            "title": "Model Performance Leaderboard"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_id",
+          "project_id",
+          "project_name",
+          "scan_created_timestamp",
+          "sci_metrics",
+          "selected_models",
+          "model_card_summary",
+          "model_performance_leaderboard"
+        ],
+        "title": "ModelCardReport"
+      },
+      "ModelPerformanceLeaderboardItem": {
+        "properties": {
+          "model_provider": {
+            "type": "string",
+            "title": "Model Provider"
+          },
+          "chunk_size": {
+            "type": "integer",
+            "title": "Chunk Size"
+          },
+          "number_of_retrieved_chunks": {
+            "type": "integer",
+            "title": "Number Of Retrieved Chunks"
+          },
+          "cost_estimate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Cost Estimate"
+          },
+          "carbon_emitted": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Carbon Emitted"
+          },
+          "average_faithfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Faithfulness"
+          },
+          "sci_per_api_call": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Sci Per Api Call"
+          },
+          "sci_per_10k_calls": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Sci Per 10K Calls"
+          },
+          "average_answer_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Answer Relevancy"
+          },
+          "average_context_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Context Relevancy"
+          },
+          "average_summarization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Summarization"
+          },
+          "average_simplicity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Simplicity"
+          },
+          "average_helpfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Helpfulness"
+          },
+          "average_clarity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Clarity"
+          },
+          "average_formality": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Average Formality"
+          },
+          "average_latency": {
+            "type": "integer",
+            "title": "Average Latency"
+          },
+          "total_tokens_used": {
+            "type": "integer",
+            "title": "Total Tokens Used"
+          },
+          "total_prompt_tokens_used": {
+            "type": "integer",
+            "title": "Total Prompt Tokens Used"
+          },
+          "total_completion_tokens_used": {
+            "type": "integer",
+            "title": "Total Completion Tokens Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_provider",
+          "chunk_size",
+          "number_of_retrieved_chunks",
+          "cost_estimate",
+          "carbon_emitted",
+          "average_faithfulness",
+          "sci_per_api_call",
+          "sci_per_10k_calls",
+          "average_answer_relevancy",
+          "average_context_relevancy",
+          "average_summarization",
+          "average_simplicity",
+          "average_helpfulness",
+          "average_clarity",
+          "average_formality",
+          "average_latency",
+          "total_tokens_used",
+          "total_prompt_tokens_used",
+          "total_completion_tokens_used"
+        ],
+        "title": "ModelPerformanceLeaderboardItem"
+      },
+      "ModelPerformanceSummary": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "cost_reduction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Cost Reduction"
+          },
+          "carbon_reduction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Carbon Reduction"
+          },
+          "min_composite_performance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Min Composite Performance"
+          },
+          "max_composite_performance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Max Composite Performance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name",
+          "cost_reduction",
+          "carbon_reduction",
+          "min_composite_performance",
+          "max_composite_performance"
+        ],
+        "title": "ModelPerformanceSummary"
+      },
+      "ModelSelected": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "model_owner": {
+            "type": "string",
+            "title": "Model Owner"
+          },
+          "model_type": {
+            "type": "string",
+            "title": "Model Type"
+          },
+          "model_size": {
+            "type": "string",
+            "title": "Model Size"
+          },
+          "papers_sample": {
+            "type": "string",
+            "title": "Papers Sample"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name",
+          "model_owner",
+          "model_type",
+          "model_size",
+          "papers_sample",
+          "model_owner"
+        ],
+        "title": "ModelSelected"
+      },
+      "ProjectCreate": {
+        "properties": {
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "project_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Description"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          },
+          "project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_name",
+          "user_name",
+          "visibility"
+        ],
+        "title": "ProjectCreate"
+      },
+      "ProjectCreateResponse": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name"
+          },
+          "project_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Description"
+          },
+          "total_scans": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Scans",
+            "default": 0
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          },
+          "last_scanned": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Scanned"
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "title": "Is Pinned"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "project_name",
+          "user_id",
+          "user_name",
+          "visibility",
+          "is_pinned"
+        ],
+        "title": "ProjectCreateResponse"
+      },
+      "ProjectEntityModel": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "last_scanned": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Scanned"
+          },
+          "project_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Description"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          },
+          "total_scans": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Scans"
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "title": "Is Pinned"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "project_name",
+          "user_id",
+          "user_name",
+          "visibility",
+          "is_pinned"
+        ],
+        "title": "ProjectEntityModel"
+      },
+      "ProjectHallucinationData": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "hallucinations_last_week": {
+            "type": "integer",
+            "title": "Hallucinations Last Week"
+          },
+          "hallucinations_this_week": {
+            "type": "integer",
+            "title": "Hallucinations This Week"
+          },
+          "percentage_change": {
+            "type": "string",
+            "title": "Percentage Change"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "project_name",
+          "hallucinations_last_week",
+          "hallucinations_this_week",
+          "percentage_change"
+        ],
+        "title": "ProjectHallucinationData"
+      },
+      "ProjectResponseModel": {
+        "properties": {
+          "total_projects": {
+            "type": "integer",
+            "title": "Total Projects"
+          },
+          "projects": {
+            "items": {
+              "$ref": "#/components/schemas/ProjectEntityModel"
+            },
+            "type": "array",
+            "title": "Projects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_projects",
+          "projects"
+        ],
+        "title": "ProjectResponseModel"
+      },
+      "ProjectUpdate": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "project_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Description"
+          },
+          "visibility": {
+            "$ref": "#/components/schemas/Visibility"
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "title": "Is Pinned"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "visibility",
+          "is_pinned"
+        ],
+        "title": "ProjectUpdate"
+      },
+      "QueryResponse": {
+        "properties": {
+          "query_id": {
+            "type": "string",
+            "title": "Query Id"
+          },
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "retrieved_context": {
+            "items": {
+              "$ref": "#/components/schemas/RetrievedContext"
+            },
+            "type": "array",
+            "title": "Retrieved Context"
+          },
+          "faithfulness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Faithfulness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "context_relevancy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ContextRelevancy"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "answer_relevancy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnswerRelevancy"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "summarization": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Summarization"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trustwise_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trustwise Score"
+          },
+          "clarity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clarity"
+          },
+          "formality": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formality"
+          },
+          "helpfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Helpfulness"
+          },
+          "simplicity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simplicity"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone"
+          },
+          "toxicity": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Toxicity"
+          },
+          "response": {
+            "type": "string",
+            "title": "Response"
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start Time"
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End Time"
+          },
+          "llm_name": {
+            "type": "string",
+            "title": "Llm Name"
+          },
+          "llm_model_prompt": {
+            "type": "string",
+            "title": "Llm Model Prompt"
+          },
+          "prompt_tokens": {
+            "type": "integer",
+            "title": "Prompt Tokens"
+          },
+          "completion_tokens": {
+            "type": "integer",
+            "title": "Completion Tokens"
+          },
+          "total_tokens": {
+            "type": "integer",
+            "title": "Total Tokens"
+          },
+          "tokens_remaining": {
+            "type": "integer",
+            "title": "Tokens Remaining"
+          },
+          "query_trace": {
+            "$ref": "#/components/schemas/CompleteQueryTrace"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query_id",
+          "query",
+          "retrieved_context",
+          "response",
+          "start_time",
+          "end_time",
+          "llm_name",
+          "llm_model_prompt",
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens",
+          "tokens_remaining",
+          "query_trace"
+        ],
+        "title": "QueryResponse"
+      },
+      "QueryTrace": {
+        "properties": {
+          "mode_name": {
+            "type": "string",
+            "title": "Mode Name"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "latency": {
+            "type": "number",
+            "title": "Latency"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode_name",
+          "version",
+          "latency"
+        ],
+        "title": "QueryTrace"
+      },
+      "ReportType": {
+        "type": "string",
+        "enum": [
+          "model_card",
+          "risk_and_compliance",
+          "executive_summary"
+        ],
+        "title": "ReportType",
+        "description": "Enum representing the three types of reports available."
+      },
+      "RetrievedContext": {
+        "properties": {
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "title": "RetrievedContext"
+      },
+      "RiskAndComplianceReport": {
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "title": "Report Id"
+          },
+          "scan_id": {
+            "type": "string",
+            "title": "Scan Id"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "report_name": {
+            "type": "string",
+            "title": "Report Name",
+            "default": "Risk and Compliance Report"
+          },
+          "report_type": {
+            "type": "string",
+            "title": "Report Type",
+            "default": "RISK_AND_COMPLIANCE"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "scan_created_timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Scan Created Timestamp"
+          },
+          "technical_appendix": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Technical Appendix"
+          },
+          "selected_models": {
+            "items": {
+              "$ref": "#/components/schemas/ModelSelected"
+            },
+            "type": "array",
+            "title": "Selected Models"
+          },
+          "sci_metrics": {
+            "$ref": "#/components/schemas/SCIdata"
+          },
+          "scan_configurations": {
+            "$ref": "#/components/schemas/ScanConfigurations"
+          },
+          "model_performance_leaderboard": {
+            "items": {
+              "$ref": "#/components/schemas/ModelPerformanceLeaderboardItem"
+            },
+            "type": "array",
+            "title": "Model Performance Leaderboard"
+          },
+          "crosswalk_results": {
+            "$ref": "#/components/schemas/CrosswalkResult"
+          },
+          "queries_and_responses": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Queries And Responses"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_id",
+          "project_id",
+          "project_name",
+          "scan_created_timestamp",
+          "selected_models",
+          "sci_metrics",
+          "scan_configurations",
+          "model_performance_leaderboard",
+          "crosswalk_results",
+          "queries_and_responses"
+        ],
+        "title": "RiskAndComplianceReport"
+      },
+      "SCIdata": {
+        "properties": {
+          "lowest_sci_value": {
+            "type": "number",
+            "title": "Lowest Sci Value"
+          },
+          "highest_sci_value": {
+            "type": "number",
+            "title": "Highest Sci Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lowest_sci_value",
+          "highest_sci_value"
+        ],
+        "title": "SCIdata"
+      },
+      "ScanConfig": {
+        "properties": {
+          "processor_name": {
+            "type": "string",
+            "title": "Processor Name"
+          },
+          "provider_region": {
+            "type": "string",
+            "title": "Provider Region"
+          },
+          "instance_type": {
+            "type": "string",
+            "title": "Instance Type"
+          },
+          "provider_name": {
+            "type": "string",
+            "title": "Provider Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "processor_name",
+          "provider_region",
+          "instance_type",
+          "provider_name"
+        ],
+        "title": "ScanConfig"
+      },
+      "ScanConfigurations": {
+        "properties": {
+          "embedding_models_used": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Embedding Models Used"
+          },
+          "documents": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Documents"
+          },
+          "queries": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Queries"
+          },
+          "infrastructure_details": {
+            "type": "object",
+            "title": "Infrastructure Details"
+          },
+          "context_relevancy_toggle": {
+            "type": "boolean",
+            "title": "Context Relevancy Toggle"
+          },
+          "answer_relevancy_toggle": {
+            "type": "boolean",
+            "title": "Answer Relevancy Toggle"
+          },
+          "summarization_toggle": {
+            "type": "boolean",
+            "title": "Summarization Toggle"
+          },
+          "faithfulness_toggle": {
+            "type": "boolean",
+            "title": "Faithfulness Toggle"
+          },
+          "clarity_toggle": {
+            "type": "boolean",
+            "title": "Clarity Toggle"
+          },
+          "simplicity_toggle": {
+            "type": "boolean",
+            "title": "Simplicity Toggle"
+          },
+          "formality_toggle": {
+            "type": "boolean",
+            "title": "Formality Toggle"
+          },
+          "helpfulness_toggle": {
+            "type": "boolean",
+            "title": "Helpfulness Toggle"
+          },
+          "cost_toggle": {
+            "type": "boolean",
+            "title": "Cost Toggle"
+          },
+          "carbon_toggle": {
+            "type": "boolean",
+            "title": "Carbon Toggle"
+          }
+        },
+        "type": "object",
+        "required": [
+          "embedding_models_used",
+          "documents",
+          "queries",
+          "infrastructure_details",
+          "context_relevancy_toggle",
+          "answer_relevancy_toggle",
+          "summarization_toggle",
+          "faithfulness_toggle",
+          "clarity_toggle",
+          "simplicity_toggle",
+          "formality_toggle",
+          "helpfulness_toggle",
+          "cost_toggle",
+          "carbon_toggle"
+        ],
+        "title": "ScanConfigurations"
+      },
+      "ScanMetrics": {
+        "properties": {
+          "safety": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Safety"
+          },
+          "hallucination_classes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hallucination Classes"
+          },
+          "alignment": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alignment"
+          }
+        },
+        "type": "object",
+        "title": "ScanMetrics"
+      },
+      "ScanObject": {
+        "properties": {
+          "scan_summary": {
+            "$ref": "#/components/schemas/ScanSummary"
+          },
+          "query_responses": {
+            "items": {
+              "$ref": "#/components/schemas/QueryResponse"
+            },
+            "type": "array",
+            "title": "Query Responses"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_summary",
+          "query_responses"
+        ],
+        "title": "ScanObject"
+      },
+      "ScanRecord": {
+        "properties": {
+          "scan_id": {
+            "type": "string",
+            "title": "Scan Id"
+          },
+          "scan_name": {
+            "type": "string",
+            "title": "Scan Name"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "query_count": {
+            "type": "integer",
+            "title": "Query Count"
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start Time"
+          },
+          "avg_faithfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Faithfulness"
+          },
+          "avg_context_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Context Relevancy"
+          },
+          "avg_answer_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Answer Relevancy"
+          },
+          "avg_summarization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Summarization"
+          },
+          "avg_clarity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Clarity"
+          },
+          "avg_formality": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Formality"
+          },
+          "avg_helpfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Helpfulness"
+          },
+          "avg_simplicity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Simplicity"
+          },
+          "common_tones": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Common Tones"
+          },
+          "avg_toxicity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Toxicity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_id",
+          "scan_name",
+          "project_id",
+          "query_count",
+          "start_time"
+        ],
+        "title": "ScanRecord"
+      },
+      "ScanRequest": {
+        "properties": {
+          "scan_name": {
+            "type": "string",
+            "title": "Scan Name"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "target_llm": {
+            "$ref": "#/components/schemas/TargetLLM"
+          },
+          "query_list": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Query List"
+          },
+          "context_files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Context Files"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/ScanMetrics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scan_name",
+          "project_id",
+          "target_llm",
+          "query_list",
+          "context_files",
+          "metrics"
+        ],
+        "title": "ScanRequest"
+      },
+      "ScanSummary": {
+        "properties": {
+          "time_elapsed": {
+            "type": "number",
+            "title": "Time Elapsed"
+          },
+          "tokens_used": {
+            "type": "integer",
+            "title": "Tokens Used"
+          },
+          "total_queries": {
+            "type": "integer",
+            "title": "Total Queries"
+          },
+          "errors": {
+            "type": "integer",
+            "title": "Errors"
+          },
+          "avg_latency": {
+            "type": "number",
+            "title": "Avg Latency"
+          },
+          "avg_faithfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Faithfulness"
+          },
+          "avg_context_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Context Relevancy"
+          },
+          "avg_answer_relevancy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Answer Relevancy"
+          },
+          "avg_summarization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Summarization"
+          },
+          "avg_trustwise_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Trustwise Score"
+          },
+          "avg_clarity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Clarity"
+          },
+          "avg_formality": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Formality"
+          },
+          "avg_helpfulness": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Helpfulness"
+          },
+          "avg_simplicity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Simplicity"
+          },
+          "common_tones": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Common Tones"
+          },
+          "avg_toxicity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avg Toxicity"
+          }
+        },
+        "type": "object",
+        "required": [
+          "time_elapsed",
+          "tokens_used",
+          "total_queries",
+          "errors",
+          "avg_latency"
+        ],
+        "title": "ScanSummary"
+      },
+      "ScansResponseModel": {
+        "properties": {
+          "total_scans": {
+            "type": "integer",
+            "title": "Total Scans"
+          },
+          "scan_records": {
+            "items": {
+              "$ref": "#/components/schemas/ScanRecord"
+            },
+            "type": "array",
+            "title": "Scan Records"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_scans",
+          "scan_records"
+        ],
+        "title": "ScansResponseModel"
+      },
+      "StatementEvaluation": {
+        "properties": {
+          "statement": {
+            "type": "string",
+            "title": "Statement"
+          },
+          "statement_passed": {
+            "type": "boolean",
+            "title": "Statement Passed"
+          },
+          "threshold_results": {
+            "$ref": "#/components/schemas/ThresholdResult"
+          }
+        },
+        "type": "object",
+        "required": [
+          "statement",
+          "statement_passed",
+          "threshold_results"
+        ],
+        "title": "StatementEvaluation"
+      },
+      "Summarization": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "title": "Summarization"
+      },
+      "SyntheticQuestionsOutput": {
+        "properties": {
+          "questions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "questions"
+        ],
+        "title": "SyntheticQuestionsOutput"
+      },
+      "SystemMetricsRequestModel": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "scan_id": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scan Id"
+          },
+          "start_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Timestamp"
+          },
+          "end_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Timestamp"
+          },
+          "llm_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Llm Id"
+          },
+          "graph_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Graph Type"
+          },
+          "metric_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metric Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id"
+        ],
+        "title": "SystemMetricsRequestModel"
+      },
+      "TargetLLM": {
+        "properties": {
+          "llm_id": {
+            "type": "string",
+            "title": "Llm Id"
+          },
+          "llm_name": {
+            "type": "string",
+            "title": "Llm Name"
+          },
+          "llm_provider": {
+            "type": "string",
+            "title": "Llm Provider"
+          }
+        },
+        "type": "object",
+        "required": [
+          "llm_id",
+          "llm_name",
+          "llm_provider"
+        ],
+        "title": "TargetLLM"
+      },
+      "ThresholdResult": {
+        "properties": {
+          "simplicity": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simplicity"
+          },
+          "clarity": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clarity"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone"
+          },
+          "formality": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formality"
+          },
+          "faithfulness": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Faithfulness"
+          },
+          "context_Relevancy": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Relevancy"
+          },
+          "answer_Relevancy": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Relevancy"
+          },
+          "summarization": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summarization"
+          },
+          "toxicity": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Toxicity"
+          },
+          "PII": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pii"
+          },
+          "helpfulness": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Helpfulness"
+          },
+          "cost": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost"
+          },
+          "latency": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latency"
+          }
+        },
+        "type": "object",
+        "title": "ThresholdResult"
+      },
+      "UserModel": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "api_key": {
+            "type": "string",
+            "title": "Api Key"
+          },
+          "models": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Models"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "api_key",
+          "models"
+        ],
+        "title": "UserModel"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Visibility": {
+        "type": "string",
+        "enum": [
+          "private",
+          "public",
+          "organization"
+        ],
+        "title": "Visibility"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
